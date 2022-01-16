@@ -11,7 +11,12 @@ function createWindow() {
     },
   });
 
-  win.loadURL(`file://${(path.join(__dirname, `/dist/RestBreakElectron/index.html`))}`);
+  //win.loadURL(`file://${(path.join(__dirname, `/dist/RestBreakElectron/index.html`))}`);
+  win.loadURL(url.format({
+    protocol: 'file:',
+    pathname: path.join(__dirname, '/dist/RestBreakElectron/index.html'),
+    slashes: true
+  }));
 
 }
 
@@ -23,8 +28,8 @@ function showNotification() {
 }
 
 app.whenReady()
-  .then(createWindow)
-  .then(showNotification);
+  .then(createWindow);
+//.then(showNotification);
 
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
@@ -34,3 +39,7 @@ app.on("activate", () => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+
+try {
+  require('electron-reloader')(module)
+} catch (_) { }
