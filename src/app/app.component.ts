@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class AppComponent {
 
   constructor(private router: Router) {
-    router.navigate(['dashboard']);
+    //router.navigate(['dashboard']);
   }
 
   title = 'Rest Break Electron';
