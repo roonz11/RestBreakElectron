@@ -1,29 +1,31 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { BehaviorSubject, interval, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
-import * as dayjs from 'dayjs'
+import { environment } from '../../environments/environment';
+import * as dayjs from 'dayjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class HeartBeatService {
+
   public restIntervalSubject: BehaviorSubject<dayjs.Dayjs> = new BehaviorSubject<dayjs.Dayjs>(dayjs());
   private restInterval: Observable<number> = interval(environment.restInterval);
-  private intervalElapsed: boolean = false;
+  private finished = false;
   constructor() { }
 
-  public start (): void {
-    console.log(environment.restInterval)
+  public start(): void {
+    this.finished = false;
     this.restInterval
-      .pipe(takeWhile(() => !this.intervalElapsed))
-      .subscribe(() => this.callHeartBeat());
+      .pipe(takeWhile(() => !this.finished))
+      .subscribe(val => this.callHeartBeat());
   }
 
-  public stop (): void {
-    this.intervalElapsed = true;
+  public stop(): void {
+    this.finished = true;
   }
 
-  private callHeartBeat (): void {
+  private callHeartBeat(): void {
     this.restIntervalSubject.next(dayjs());
   }
 }

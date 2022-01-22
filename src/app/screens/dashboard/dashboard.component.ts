@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as dayjs from 'dayjs';
-import { HeartBeatService } from 'src/services/heart-beat.service';
+import { NotificationService } from '../../services/notification.service';
+import { HeartBeatService } from '../../services/heart-beat.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,17 +11,22 @@ import { HeartBeatService } from 'src/services/heart-beat.service';
 export class DashboardComponent implements OnInit {
 
   public restInterval = dayjs();
-  constructor(private heartBeatService: HeartBeatService) { }
+  constructor(
+    private heartBeatService: HeartBeatService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit (): void {
-    this.heartBeatService.restIntervalSubject.subscribe(result => {
-      this.restInterval = result
+    this.heartBeatService.restIntervalSubject.subscribe((result: dayjs.Dayjs) => {
+      this.restInterval = result;
+      this.notificationService.showRestNotification();
+
     });
 
-    this.startHeartBeat();
+    //this.startHeartBeat();
   }
 
-  public startHeartBeat () {
+  public onStart () {
     this.heartBeatService.start();
   }
 

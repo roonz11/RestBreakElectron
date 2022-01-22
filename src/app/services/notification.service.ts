@@ -1,14 +1,18 @@
-// import { Injectable } from '@angular/core';
-// const electron = (<any>window).require('electron');
+import { Injectable } from '@angular/core';
+const electron = require('electron');
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class NotificationService {
+@Injectable({
+    providedIn: 'root'
+})
+export class NotificationService {
 
-//   constructor() { 
-//     electron.ipcRender.on('showNotificationResponse', (event: any, result: any) => {
-//       console.log('yo yo yo', result);
-//     });
-//   }
-// }
+    constructor() {
+        electron.ipcRenderer.on('showNotificaiton', (event: any, result: any) => {
+            console.log('yo yo yo', result);
+        });
+    }
+
+    public showRestNotification () {
+        console.log('take rest');
+    }
+}
